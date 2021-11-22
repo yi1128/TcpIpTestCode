@@ -4,16 +4,16 @@
 #include <winsock2.h>
 #include <iostream>
 
+#include <inttypes.h>
+
 /* ethernet communication header */
-#include "ethernet_structure.h";
-#include "ethernet_parser.h";
+#include "../header/ethernet_parser.h"
+#include "../header/ethernet_structure.h"
+#include "../header/ethernet_test_show.h"
 /* end ethernet communication header */
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment(lib, "ws2_32");
-
-#define METHOD_FIX 1
-#define METHOD_CONTINUOUS 2
 
 /* extern */
 extern struct MsgState* MsgStateSend;
@@ -33,15 +33,12 @@ extern struct CartesianParameterSettingStruct* cParamGet;
 extern struct CartesianTrajectorySetStruct* cTrajSet;
 extern struct CartesianTrajectorySetStruct* cTrajGet;
 
-extern struct JointTargetStruct* jTarget;
+extern struct JointTargetStruct* jTargetSet;
 extern struct JointTargetStruct* jTargetGet;
 
-extern struct CartesianTargetStruct* cTarget;
+extern struct CartesianTargetStruct* cTargetSet;
 extern struct CartesianTargetStruct* cTargetGet;
 /* end extern */
-
-void JointParameterSet(int method);
-void JointTrajectorySet(int method);
 
 void ErrorHandling(char* message)
 {
@@ -57,20 +54,14 @@ int main()
 	/* End Parser Init */
 
 	/* Buffer */
-	int8_t* Buffer;
-	int8_t* inBuff;
-	int8_t* inBuff2;
-	int8_t* inBuff3;
-
-	Buffer = (int8_t*)malloc(sizeof(int8_t));
-	inBuff = (int8_t*)malloc(sizeof(int8_t));
-	inBuff2 = (int8_t*)malloc(sizeof(int8_t));
-	inBuff3 = (int8_t*)malloc(sizeof(int8_t));
+	int8_t* sendBuff = (int8_t*)malloc(MsgStateSize);
+	int8_t* recvBuff = (int8_t*)malloc(totalSize);
 	/* End Buffer */
 
 	int time_stamp = 0;
 	uint32_t count = 0;
 
+	/* IpAddress */
 	std::string ipAddress = "127.0.0.1"; //"192.168.0.117"; 
 	int port = 7;
 	WSADATA wsaData;
@@ -80,17 +71,16 @@ int main()
 	char message[30];
 	int strLen;
 
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0){
 		std::cerr << "WSASTartup() error!" << std::endl;
-
-	std::cerr << "WSASTartup()!" << std::endl;
+	}
+	
 	hSocket = socket(PF_INET, SOCK_STREAM, 0);
 	if (hSocket == INVALID_SOCKET)
 	{
 		std::cerr << "socket() error" << std::endl;
 		return -1;
 	}
-	std::cerr << "socket()!" << std::endl;
 
 	memset(&servAddr, 0, sizeof(servAddr));
 	servAddr.sin_family = AF_INET;
@@ -102,7 +92,7 @@ int main()
 		std::cerr << "connect() error!" << std::endl;
 		return -1;
 	}
-	std::cerr << "Connect Complete!!" << std::endl;
+
 
 	/* Registration */
 	MsgStateSend->packetType[0] = 0;
@@ -120,7 +110,6 @@ int main()
 	if (strLen == -1){
 		printf_s("Registration Recv Error!!!\n");
 	}
-	
 	/* End Registration */
 
 	while (1) {
@@ -136,162 +125,253 @@ int main()
 			{
 				printf_s("Registration Send Error!!!\n");
 			}
-			strLen = recv(hSocket, (char*)MsgStateRecv, MsgStateSize, 0);
+			printf_s("Bytes sent: %d\n", sendResult);
+
+			strLen = recv(hSocket, (char*)recvBuff, totalSize, 0);
 			if (strLen == -1) {
 				printf_s("Registration Recv Error!!!\n");
 			}
-			printf_s("%d\n", MsgStateRecv->commState);
+			printf_s("Bytes received: %d\n", strLen);
+			DataDivideMsgState(recvBuff, MsgStateRecv);
 			/* End Servo On */
 		}
 		else if (MsgStateRecv->commState == SERVO_ON_COMPLETE) {
 			printf_s("Servo On Complete!!\n");
 			/* Tunning State */
-			MsgStateSend->packetType[0] = 3; // 1 : JointParameterSettingStruct 2 : JointTrajectorySetStruct
+			MsgStateSend->packetType[0] = 15; //  1, 2, 4, 8
 			MsgStateSend->packetType[1] = 0;
 			MsgStateSend->commState = TUNING_STATE;
-			MsgStateSend->payloadSize = MsgStateSize + JointParamSetStructSize + JointTrajSetStructSize;
-		
+			MsgStateSend->payloadSize = MsgStateSize + 
+				JointParamSetStructSize + 
+				JointTrajSetStructSize + 
+				CartesianParamSetStructSize + 
+				CartesianTrajSetStructSize;
+			
 			JointParameterSet(METHOD_FIX);
 			JointTrajectorySet(METHOD_FIX);
-		
+			CartesianParamSet(METHOD_FIX);
+			CartesianTrajectorySet(METHOD_FIX);
+
+			sendBuff = (int8_t*)malloc(MsgStateSize + 
+				JointParamSetStructSize + 
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize + 
+				CartesianTrajSetStructSize);
+
+			DataGethering5(
+				(int8_t*)MsgStateSend, 
+				(int8_t*)jParamSet, 
+				(int8_t*)jTrajSet, 
+				(int8_t*)cParamSet, 
+				(int8_t*)cTrajSet, 
+				sendBuff);
 			
-			printf_s("Convert To Buffer\n");
-			MsgStateToBuffer(MsgStateSend,inBuff);
-			JointParameterSettingStructToBuffer(jParamSet, inBuff2);
-			JointTrajectorySetStructToBuffer(jTrajSet, inBuff3);
-			printf_s("Data Gethering\n");
+			int sendResult = send(hSocket, (char*)sendBuff, 
+				MsgStateSize +
+				JointParamSetStructSize +
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize +
+				CartesianTrajSetStructSize, 
+				0);
 
-			printf_s("%d %d %d\n", _msize(inBuff), _msize(inBuff2), _msize(inBuff3));
-			DataGethering3(inBuff, inBuff2, inBuff3, Buffer);
-			printf_s("%d\n", _msize(Buffer));
-			int sendResult = send(hSocket, (char*)Buffer, MsgStateSend->payloadSize, 0);
-			if (sendResult == -1)
-			{
-				printf_s("Registration Send Error!!!\n");
+			if (sendResult == -1){
+				printf_s("Tunning State Send Error!!!\n");
 			}
+			printf_s("Bytes sent: %d\n", sendResult);
 
-			strLen = recv(hSocket, (char*)MsgStateRecv, MsgStateSize, 0);
+			strLen = recv(hSocket, (char*)recvBuff, totalSize, 0);
 			if (strLen == -1) {
-				printf_s("Registration Recv Error!!!\n");
+				printf_s("Tunning State Recv Error!!!\n");
 			}
-
-			//free(Buffer);
-			//free(inBuff);
-			//free(inBuff2);
-			//free(inBuff3);
+			printf_s("Bytes received: %d\n", strLen);
+			DataDivideMsgState(recvBuff, MsgStateRecv);
+			if (DataDivideJointParamSettingStruct(recvBuff, MsgStateRecv, jParamGet)) printf_jointParam();
+			if (DataDivideJointTrajectorySetStruct(recvBuff, MsgStateRecv, jTrajGet)) printf_jointTraj();
+			if (DataDivideCartesianParameterSettingStruct(recvBuff, MsgStateRecv, cParamGet)) printf_CartesianParam();
+			if (DataDivideCartesianTrajectorySetStruct(recvBuff, MsgStateRecv, cTrajGet)) printf_CartesianTraj();
 			/* End Tunning State */
 		}
 		else if (MsgStateRecv->commState == TUNING_STATE_COMPLETE) {
+			printf_s("Tunning Complete!!\n");
 			/* Homing */
+			MsgStateSend->packetType[0] = 16;	// 16
+			MsgStateSend->packetType[1] = 0;
+			MsgStateSend->commState = HOMING;
+			MsgStateSend->payloadSize = MsgStateSize + JointTargetStructSize;
+			
+			JointTargetSet(METHOD_FIX);
 
+			sendBuff = (int8_t*)malloc(
+				MsgStateSize +
+				JointTargetStructSize
+				);
+			
+			DataGethering2(
+				(int8_t*)MsgStateSend,
+				(int8_t*)jTargetSet,
+				sendBuff);
+			int sendResult = send(hSocket, (char*)sendBuff, MsgStateSize + JointTargetStructSize, 0);
+			if (sendResult == -1)
+			{
+				printf_s("Homing State Send Error!!!\n");
+			}
+			printf_s("Bytes sent: %d\n", sendResult);
+
+			strLen = recv(hSocket, (char*)recvBuff, totalSize, 0);
+			if (strLen == -1) {
+				printf_s("Homing Recv Error!!!\n");
+			}
+			printf_s("Bytes received: %d\n", strLen);
+			
+			DataDivideMsgState(recvBuff, MsgStateRecv); 
+			if (DataDivideServerSystemData(recvBuff, MsgStateRecv, ServerData)) printf_ServerSystemData();
 			/* End Homing */
 		}
 		else if (MsgStateRecv->commState == HOMING_COMPLETE) {
-		
-				/* Free State */
-				//int sendResult = send(hSocket, (char*)&sendData, sizeof(TCP_COMM_TEST_SET), 0);
-				if (sendResult == -1)
-				{
+			printf_s("Homing Complete!!\n");
 
-				}
+			/* Free State */
+			MsgStateSend->packetType[0] = 63;
+			MsgStateSend->packetType[1] = 0;
+			MsgStateSend->commState = FREE_STATE;
+			MsgStateSend->payloadSize = MsgStateSize +
+				JointParamSetStructSize +
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize +
+				CartesianTrajSetStructSize +
+				JointTargetStructSize +
+				CartesianTargetStructSize;
 
-				//strLen = recv(hSocket, (char*)&recvData, sizeof(TCP_COMM_TEST_SET), 0);
-				if (strLen == -1)
-				{
+			JointParameterSet(METHOD_FIX);
+			JointTrajectorySet(METHOD_FIX);
+			CartesianParamSet(METHOD_FIX);
+			CartesianTrajectorySet(METHOD_FIX);
+			JointTargetSet(METHOD_FIX);
+			CartesianTargetSet(METHOD_FIX);
 
-					break;
-				}
-				/* End Free State */
+			sendBuff = (int8_t*)malloc(
+				MsgStateSize +
+				JointParamSetStructSize +
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize +
+				CartesianTrajSetStructSize +
+				JointTargetStructSize +
+				CartesianTargetStructSize);
+
+			DataGethering7(
+				(int8_t*)MsgStateSend,
+				(int8_t*)jParamSet,
+				(int8_t*)jTrajSet,
+				(int8_t*)cParamSet,
+				(int8_t*)cTrajSet,
+				(int8_t*)jTargetSet,
+				(int8_t*)cTargetSet,
+				sendBuff);
+
+			int sendResult = send(hSocket, (char*)sendBuff,
+				MsgStateSize +
+				JointParamSetStructSize +
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize +
+				CartesianTrajSetStructSize +
+				JointTargetStructSize +
+				CartesianTargetStructSize,
+				0);
+			if (sendResult == -1) {
+				printf_s("Tunning State Send Error!!!\n");
+			}
+			printf_s("Bytes sent: %d\n", sendResult);
+
+			strLen = recv(hSocket, (char*)recvBuff, totalSize, 0);
+			if (strLen == -1) {
+				printf_s("Free State Start Error!!!\n");
+			}
+			printf_s("Bytes received: %d\n", strLen);
+
+			DataDivideMsgState(recvBuff, MsgStateRecv);
+			if (DataDivideJointParamSettingStruct(recvBuff, MsgStateRecv, jParamGet)) printf_jointParam();
+			if (DataDivideJointTrajectorySetStruct(recvBuff, MsgStateRecv, jTrajGet)) printf_jointTraj();
+			if (DataDivideCartesianParameterSettingStruct(recvBuff, MsgStateRecv, cParamGet)) printf_CartesianParam();
+			if (DataDivideCartesianTrajectorySetStruct(recvBuff, MsgStateRecv, cTrajGet)) printf_CartesianTraj();
+			if (DataDivideServerSystemData(recvBuff, MsgStateRecv, ServerData)) printf_ServerSystemData();
+			/* End Free State */
 		}
+		else if (MsgStateRecv->commState == FREE_STATE) {
+			printf_s("Free State!!\n");
+
+			/* Free State */
+			MsgStateSend->packetType[0] = 63;
+			MsgStateSend->packetType[1] = 0;
+			MsgStateSend->commState = FREE_STATE;
+			MsgStateSend->payloadSize = MsgStateSize +
+				JointParamSetStructSize +
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize +
+				CartesianTrajSetStructSize +
+				JointTargetStructSize +
+				CartesianTargetStructSize;
+
+			JointParameterSet(METHOD_FIX);
+			JointTrajectorySet(METHOD_FIX);
+			CartesianParamSet(METHOD_FIX);
+			CartesianTrajectorySet(METHOD_FIX);
+			JointTargetSet(METHOD_FIX);
+			CartesianTargetSet(METHOD_FIX);
+
+			sendBuff = (int8_t*)malloc(
+				MsgStateSize +
+				JointParamSetStructSize +
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize +
+				CartesianTrajSetStructSize +
+				JointTargetStructSize +
+				CartesianTargetStructSize);
+
+			DataGethering7(
+				(int8_t*)MsgStateSend,
+				(int8_t*)jParamSet,
+				(int8_t*)jTrajSet,
+				(int8_t*)cParamSet,
+				(int8_t*)cTrajSet,
+				(int8_t*)jTargetSet,
+				(int8_t*)cTargetSet,
+				sendBuff);
+
+			int sendResult = send(hSocket, (char*)sendBuff,
+				MsgStateSize +
+				JointParamSetStructSize +
+				JointTrajSetStructSize +
+				CartesianParamSetStructSize +
+				CartesianTrajSetStructSize +
+				JointTargetStructSize +
+				CartesianTargetStructSize,
+				0);
+			if (sendResult == -1) {
+				printf_s("Free State Send Error!!!\n");
+			}
+			printf_s("Bytes sent: %d\n", sendResult);
+
+			strLen = recv(hSocket, (char*)recvBuff, totalSize, 0);
+			if (strLen == -1) {
+				printf_s("Free State Recv Error!!!\n");
+			}
+			printf_s("Bytes received: %d\n", strLen);
+
+			DataDivideMsgState(recvBuff, MsgStateRecv);
+			if (DataDivideJointParamSettingStruct(recvBuff, MsgStateRecv, jParamGet)) printf_jointParam();
+			if (DataDivideJointTrajectorySetStruct(recvBuff, MsgStateRecv, jTrajGet)) printf_jointTraj();
+			if (DataDivideCartesianParameterSettingStruct(recvBuff, MsgStateRecv, cParamGet)) printf_CartesianParam();
+			if (DataDivideCartesianTrajectorySetStruct(recvBuff, MsgStateRecv, cTrajGet)) printf_CartesianTraj();
+			if (DataDivideServerSystemData(recvBuff, MsgStateRecv, ServerData)) printf_ServerSystemData();
+			/* End Free State */
+		}
+		if(sendBuff != NULL) free(sendBuff);
 	}
+
+	// clean up
+	free(recvBuff);
 	closesocket(hSocket);
-	WSACleanup();
 	system("pause");
+	WSACleanup();
 	return 0;
-}
-
-void JointParameterSet(int method) 
-{
-	if (method == METHOD_FIX) {
-		jParamSet->jointTorquePgain[0] = 1.11;
-		jParamSet->jointTorquePgain[1] = 2.22;
-		jParamSet->jointTorquePgain[2] = 3.33;
-		jParamSet->jointTorquePgain[3] = 4.44;
-
-		jParamSet->jointTorqueIgain[0] = 5.55;
-		jParamSet->jointTorqueIgain[1] = 6.66;
-		jParamSet->jointTorqueIgain[2] = 7.77;
-		jParamSet->jointTorqueIgain[3] = 8.88;
-
-		jParamSet->jointTorqueDgain[0] = 9.99;
-		jParamSet->jointTorqueDgain[1] = 10.111;
-		jParamSet->jointTorqueDgain[2] = 11.111;
-		jParamSet->jointTorqueDgain[3] = 12.222;
-
-		jParamSet->jointPositionPgain[0] = 13.33;
-		jParamSet->jointPositionPgain[1] = 14.44;
-		jParamSet->jointPositionPgain[2] = 15.55;
-		jParamSet->jointPositionPgain[3] = 16.6666;
-
-		jParamSet->jointPositionIgain[0] = 17.777;
-		jParamSet->jointPositionIgain[1] = 18.888;
-		jParamSet->jointPositionIgain[2] = 19.999;
-		jParamSet->jointPositionIgain[3] = 20.222;
-
-		jParamSet->jointPositionDgain[0] = 21.111;
-		jParamSet->jointPositionDgain[1] = 22.222;
-		jParamSet->jointPositionDgain[2] = 23.3333;
-		jParamSet->jointPositionDgain[3] = 24.4444;
-
-		jParamSet->jointGravityGain[0] = 25.5555;
-		jParamSet->jointGravityGain[1] = 26.6666;
-		jParamSet->jointGravityGain[2] = 27.7777;
-		jParamSet->jointGravityGain[3] = 28.8888;
-
-		jParamSet->jointFrictionGain[0] = 29.9999;
-		jParamSet->jointFrictionGain[1] = 30.1111;
-		jParamSet->jointFrictionGain[2] = 31.1111;
-		jParamSet->jointFrictionGain[3] = 32.22222;
-
-		jParamSet->jointCurrentGain[0] = 33.33333;
-		jParamSet->jointCurrentGain[1] = 34.44444;
-		jParamSet->jointCurrentGain[2] = 35.555;
-		jParamSet->jointCurrentGain[3] = 36.6666;
-
-		jParamSet->jointConstantTorque[0] = 37.7777;
-		jParamSet->jointConstantTorque[1] = 38.8888;
-		jParamSet->jointConstantTorque[2] = 39.99999;
-		jParamSet->jointConstantTorque[3] = 40.0141;
-
-		jParamSet->jointConstantSpring[0] = 41.1111;
-		jParamSet->jointConstantSpring[1] = 42.2222;
-		jParamSet->jointConstantSpring[2] = 43.3333;
-		jParamSet->jointConstantSpring[3] = 44.4444;
-
-		jParamSet->jointConstantEfficiency[0] = 45.5555;
-		jParamSet->jointConstantEfficiency[1] = 46.6666;
-		jParamSet->jointConstantEfficiency[2] = 47.777;
-		jParamSet->jointConstantEfficiency[3] = 48.8;
-	}
-	else if (method == METHOD_CONTINUOUS) {
-
-	}
-}
-
-void JointTrajectorySet(int method)
-{
-	if (method == METHOD_FIX) {
-		jTrajSet->JointTrajecotryTime[0] = 200.11;
-		jTrajSet->JointTrajecotryTime[1] = 321.11;
-		jTrajSet->JointTrajecotryTime[2] = 4631.11;
-		jTrajSet->JointTrajecotryTime[3] = 567.11;
-
-		jTrajSet->JointTrajectoryAcc[0] = 3123.156;
-		jTrajSet->JointTrajectoryAcc[1] = 76345.156;
-		jTrajSet->JointTrajectoryAcc[2] = 364523.156;
-		jTrajSet->JointTrajectoryAcc[3] = 234123.156;
-	}
-	else if (method == METHOD_CONTINUOUS) {
-
-	}
 }

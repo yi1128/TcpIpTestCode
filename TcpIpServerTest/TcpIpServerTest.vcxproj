@@ -142,8 +142,9 @@
     <ClCompile Include="TcpIpServerTestCode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ethernet_parser.h" />
-    <ClInclude Include="ethernet_structure.h" />
+    <ClInclude Include="..\header\ethernet_parser.h" />
+    <ClInclude Include="..\header\ethernet_structure.h" />
+    <ClInclude Include="..\header\ethernet_test_show.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -20,10 +20,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ethernet_parser.h">
+    <ClInclude Include="..\header\ethernet_parser.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ethernet_structure.h">
+    <ClInclude Include="..\header\ethernet_structure.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\header\ethernet_test_show.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

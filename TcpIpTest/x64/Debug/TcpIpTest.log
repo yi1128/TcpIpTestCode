@@ -1,0 +1,119 @@
+﻿  tcpipClientTest.cpp
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(8,10): warning C4067: 전처리기 지시문 다음에 예기치 않은 토큰이 있습니다. 줄 바꿈 문자가 필요합니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(44,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'MsgState' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(74,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'ServerSystemData' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(93,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'JointParameterSettingStruct' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(99,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'JointTrajectorySetStruct' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(106,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'CartesianParameterSettingStruct' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(112,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'CartesianTrajectorySetStruct' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(117,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'JointTargetStruct' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_structure.h(127,2): warning C4091: 'typedef ': 변수를 선언하지 않으면 'CartesianTargetStruct' 왼쪽은 무시됩니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(9,10): warning C4067: 전처리기 지시문 다음에 예기치 않은 토큰이 있습니다. 줄 바꿈 문자가 필요합니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(217,37): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(244,66): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(249,67): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(256,67): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(261,66): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(273,78): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(278,77): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(283,78): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(288,77): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(293,72): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(298,73): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(303,72): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(308,74): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(313,69): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(331,68): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(336,68): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(341,68): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(347,66): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(352,66): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(357,66): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(363,73): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(368,69): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(373,69): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(379,66): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(384,66): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(389,67): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(408,68): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(413,67): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(431,76): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(436,76): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(441,76): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(458,76): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(463,75): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(481,59): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(775,43): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(805,59): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(838,75): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(872,91): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(908,107): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(946,123): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\ethernet_parser.h(986,139): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(13,31): warning C4081: 'newline'이(가) 있어야 하는데 ';'이(가) 있습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(163,13): warning C4477: 'printf_s' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'size_t'입니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(163,13): message : 서식 문자열에서 '%zd'을(를) 사용하는 것이 좋습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(163,13): warning C4477: 'printf_s' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'size_t'입니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(163,13): message : 서식 문자열에서 '%zd'을(를) 사용하는 것이 좋습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(163,13): warning C4477: 'printf_s' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 3의 형식이 'size_t'입니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(163,13): message : 서식 문자열에서 '%zd'을(를) 사용하는 것이 좋습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(166,13): warning C4477: 'printf_s' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'size_t'입니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(166,13): message : 서식 문자열에서 '%zd'을(를) 사용하는 것이 좋습니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(92,29): error C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(75,7): warning C4101: 'message' :참조되지 않은 지역 변수입니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(216,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(217,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(218,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(219,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(221,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(222,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(223,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(224,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(226,40): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(227,42): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(228,42): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(229,42): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(231,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(232,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(233,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(234,45): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(236,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(237,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(238,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(239,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(241,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(242,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(243,45): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(244,45): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(246,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(247,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(248,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(249,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(251,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(252,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(253,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(254,45): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(256,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(257,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(258,42): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(259,43): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(261,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(262,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(263,47): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(264,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(266,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(267,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(268,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(269,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(271,50): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(272,50): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(273,49): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(274,47): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(284,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(285,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(286,45): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(287,44): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(289,45): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(290,46): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(291,47): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\User\Dropbox\PC\Desktop\TcpIpTestGit\TcpIpTestCode\TcpIpTest\tcpipClientTest.cpp(292,47): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.

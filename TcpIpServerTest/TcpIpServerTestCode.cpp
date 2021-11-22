@@ -1,6 +1,5 @@
 
 #undef UNICODE
-
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -9,18 +8,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include<inttypes.h>
+
 /* ethernet communication header */
-#include "ethernet_structure.h";
-#include "ethernet_parser.h";
+#include "../header/ethernet_parser.h"
+#include "../header/ethernet_structure.h"
+#include "../header/ethernet_test_show.h"
 /* end ethernet communication header */
 
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 // #pragma comment (lib, "Mswsock.lib")
 
-#define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "7"
-
 
 /* extern */
 extern struct MsgState* MsgStateSend;
@@ -40,15 +40,12 @@ extern struct CartesianParameterSettingStruct* cParamGet;
 extern struct CartesianTrajectorySetStruct* cTrajSet;
 extern struct CartesianTrajectorySetStruct* cTrajGet;
 
-extern struct JointTargetStruct* jTarget;
+extern struct JointTargetStruct* jTargetSet;
 extern struct JointTargetStruct* jTargetGet;
 
-extern struct CartesianTargetStruct* cTarget;
+extern struct CartesianTargetStruct* cTargetSet;
 extern struct CartesianTargetStruct* cTargetGet;
 /* end extern */
-
-void print_jointParam();
-void printf_jointTraj();
 
 int __cdecl main(void)
 {
@@ -57,7 +54,8 @@ int __cdecl main(void)
     /* End Parser Init */
 
     /* Buffer */
-    int8_t* Buffer;
+    int8_t* sendBuff;
+    int8_t* recvBuff = (int8_t*)malloc(totalSize);
     /* End Buffer */
 
     WSADATA wsaData;
@@ -70,10 +68,8 @@ int __cdecl main(void)
     struct addrinfo hints;
 
     int iSendResult;
-    char recvbuf[DEFAULT_BUFLEN];
-    int recvbuflen = DEFAULT_BUFLEN;
 
-    // Initialize Winsock
+    /* Initialize Winsock */
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
         printf("WSAStartup failed with error: %d\n", iResult);
@@ -86,7 +82,7 @@ int __cdecl main(void)
     hints.ai_protocol = IPPROTO_TCP;
     hints.ai_flags = AI_PASSIVE;
 
-    // Resolve the server address and port
+    /* Resolve the server addressand port */
     iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
     if (iResult != 0) {
         printf_s("getaddrinfo failed with error: %d\n", iResult);
@@ -94,7 +90,7 @@ int __cdecl main(void)
         return 1;
     }
 
-    // Create a SOCKET for connecting to server
+    /* Create a SOCKET for connecting to server */
     ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
     if (ListenSocket == INVALID_SOCKET) {
         printf_s("socket failed with error: %ld\n", WSAGetLastError());
@@ -103,7 +99,7 @@ int __cdecl main(void)
         return 1;
     }
 
-    // Setup the TCP listening socket
+    /* Setup the TCP listening socket */
     iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
     if (iResult == SOCKET_ERROR) {
         printf_s("bind failed with error: %d\n", WSAGetLastError());
@@ -123,7 +119,7 @@ int __cdecl main(void)
         return 1;
     }
 
-    // Accept a client socket
+    /* Accept a client socket */
     ClientSocket = accept(ListenSocket, NULL, NULL);
     if (ClientSocket == INVALID_SOCKET) {
         printf_s("accept failed with error: %d\n", WSAGetLastError());
@@ -132,15 +128,23 @@ int __cdecl main(void)
         return 1;
     }
 
-    // No longer need server socket
+    /* No longer need server socket */
     closesocket(ListenSocket);
 
-    // Receive until the peer shuts down the connection
+    /* Receive until the peer shuts down the connection */
     do {
-        iResult = recv(ClientSocket, (char*)MsgStateRecv, MsgStateSize, 0);
+        iResult = recv(ClientSocket, (char*)recvBuff, totalSize, 0);
         if (iResult > 0) {
             printf_s("Bytes received: %d\n", iResult);
-          
+            if(DataDivideMsgState(recvBuff, MsgStateRecv))
+            if(DataDivideJointParamSettingStruct(recvBuff, MsgStateRecv, jParamGet)) printf_jointParam();
+            if(DataDivideJointTrajectorySetStruct(recvBuff, MsgStateRecv, jTrajGet)) printf_jointTraj();
+            if(DataDivideCartesianParameterSettingStruct(recvBuff, MsgStateRecv, cParamGet)) printf_CartesianParam();
+            if(DataDivideCartesianTrajectorySetStruct(recvBuff, MsgStateRecv, cTrajGet)) printf_CartesianTraj();
+            if(DataDivideJointTaregetStruct(recvBuff, MsgStateRecv, jTargetGet)) printf_JointTarget();
+            if(DataDivideCartesianTargetStruct(recvBuff, MsgStateRecv, cTargetGet)) printf_CartesianTarget();
+            if(DataDivideServerSystemData(recvBuff, MsgStateRecv, ServerData)) printf_ServerSystemData();
+            
             if (MsgStateRecv->commState == REGISTRATION){
                 printf_s("Registration\n");
                 /* Registration */
@@ -157,18 +161,21 @@ int __cdecl main(void)
                     return 1;
                 }
                 printf_s("Bytes sent: %d\n", iSendResult);
-
                 /* End Registration */
             }
             else if (MsgStateRecv->commState == SERVO_ON) {
                 printf_s("Servo On\n");
                 /* Servo On */
-                MsgStateSend->packetType[0] = 0;
+                MsgStateSend->packetType[0] = 64;	// 64
                 MsgStateSend->packetType[1] = 0;
                 MsgStateSend->commState = SERVO_ON_COMPLETE;
-                MsgStateSend->payloadSize = MsgStateSize;
+                MsgStateSend->payloadSize = MsgStateSize + ServerSystemDataSize;
 
-                iSendResult = send(ClientSocket, (char *)MsgStateSend, MsgStateSize, 0);
+				ServerSystemDataSet();
+				sendBuff = (int8_t*)malloc(MsgStateSize + ServerSystemDataSize);
+				DataGethering2((int8_t*)MsgStateSend, (int8_t*)ServerData, sendBuff);
+
+                iSendResult = send(ClientSocket, (char *)sendBuff, MsgStateSize + ServerSystemDataSize, 0);
                 if (iSendResult == SOCKET_ERROR) {
                     printf_s("send failed with error: %d\n", WSAGetLastError());
                     closesocket(ClientSocket);
@@ -176,24 +183,12 @@ int __cdecl main(void)
                     return 1;
                 }
                 printf_s("Bytes sent: %d\n", iSendResult);
+				free(sendBuff);
                 /* End Servo On */
             }
             else if (MsgStateRecv->commState == TUNING_STATE) {
                 printf_s("Tunning State\n");
                 /* Tunning State */
-                int size = (int)MsgStateRecv->payloadSize - MsgStateSize;
-                Buffer = (int8_t*)malloc(size);
-                int iResult2 = recv(ClientSocket, (char*)Buffer, size, 0);
-                if (iResult2 > 0) {
-                    printf_s("Tunning State Recv Error !!!\n");
-                }
-                printf_s("Bytes received: %d\n", iResult2);
-
-                DataDivideJointParamSettingStruct(Buffer, MsgStateRecv, jParamGet);
-                print_jointParam();
-                DataDivideJointTrajectorySetStruct(Buffer, MsgStateRecv, jTrajGet);
-                printf_jointTraj();
-
                 MsgStateSend->packetType[0] = 0;
                 MsgStateSend->packetType[1] = 0;
                 MsgStateSend->commState = TUNING_STATE_COMPLETE;
@@ -210,15 +205,81 @@ int __cdecl main(void)
                 /* End Tunning State */
             }
             else if (MsgStateRecv->commState == HOMING) {
+                printf_s("Homing State\n");
                 /* Homing */
+                MsgStateSend->packetType[0] = 64;	// 64
+                MsgStateSend->packetType[1] = 0;
+                MsgStateSend->commState = HOMING_COMPLETE;
+                MsgStateSend->payloadSize = MsgStateSize + ServerSystemDataSize;
 
+                ServerSystemDataSet();
+                sendBuff = (int8_t*)malloc(MsgStateSize + ServerSystemDataSize);
+                DataGethering2((int8_t*)MsgStateSend, (int8_t*)ServerData, sendBuff);
+				
+                iSendResult = send(ClientSocket, (char*)sendBuff, MsgStateSize + ServerSystemDataSize, 0);
+                if (iSendResult == SOCKET_ERROR) {
+                    printf_s("send failed with error: %d\n", WSAGetLastError());
+                    closesocket(ClientSocket);
+                    WSACleanup();
+                    return 1;
+                }
+                printf_s("Bytes sent: %d\n", iSendResult);
+				free(sendBuff);
                 /* End Homing */
             }
             else if (MsgStateRecv->commState == FREE_STATE) {
                 /* Free State */
+				MsgStateSend->packetType[0] = 79;	// 1, 2, 4, 8, 64
+				MsgStateSend->packetType[1] = 0;
+				MsgStateSend->commState = FREE_STATE;
+				MsgStateSend->payloadSize = MsgStateSize +
+					JointParamSetStructSize +
+					JointTrajSetStructSize +
+					CartesianParamSetStructSize +
+					CartesianTrajSetStructSize +
+					ServerSystemDataSize;
 
+				JointParameterSet(METHOD_FIX);
+				JointTrajectorySet(METHOD_FIX);
+				CartesianParamSet(METHOD_FIX);
+				CartesianTrajectorySet(METHOD_FIX);
+				ServerSystemDataSet();
+
+				sendBuff = (int8_t*)malloc(
+					MsgStateSize + 
+					JointParamSetStructSize +
+					JointTrajSetStructSize +
+					CartesianParamSetStructSize +
+					CartesianTrajSetStructSize +
+					ServerSystemDataSize);
+
+				DataGethering6(
+					(int8_t*)MsgStateSend,
+					(int8_t*)jParamSet,
+					(int8_t*)jTrajSet,
+					(int8_t*)cParamSet,
+					(int8_t*)cTrajSet,
+					(int8_t*)ServerData, 
+					sendBuff);
+
+				iSendResult = send(ClientSocket, (char*)sendBuff, MsgStateSize +
+					JointParamSetStructSize +
+					JointTrajSetStructSize +
+					CartesianParamSetStructSize +
+					CartesianTrajSetStructSize +
+					ServerSystemDataSize,
+					0);
+				if (iSendResult == SOCKET_ERROR) {
+					printf_s("send failed with error: %d\n", WSAGetLastError());
+					closesocket(ClientSocket);
+					WSACleanup();
+					return 1;
+				}
+				printf_s("Bytes sent: %d\n", iSendResult);
+				free(sendBuff);
                 /* End Free State */
             }
+			
         }
         else if (iResult == 0)
             printf_s("Connection closing...\n");
@@ -230,7 +291,7 @@ int __cdecl main(void)
         }
     } while (iResult > 0);
 
-    // shutdown the connection since we're done
+    /* shutdown the connection since we're done */
     iResult = shutdown(ClientSocket, SD_SEND);
     if (iResult == SOCKET_ERROR) {
         printf_s("shutdown failed with error: %d\n", WSAGetLastError());
@@ -239,41 +300,12 @@ int __cdecl main(void)
         return 1;
     }
 
-    // cleanup
+    /* cleanup */
+    free(recvBuff);
     closesocket(ClientSocket);
+	system("pause");
     WSACleanup();
-    system("pause");
+    
     return 0;
 }
 
-void print_jointParam()
-{
-    printf("\nJoint Parameters Get : \n");
-    for (int i = 0; i < 4; i++)
-    {
-        printf_s("%f\n", jParamGet->jointTorquePgain[i]);
-        printf_s("%f\n", jParamGet->jointTorqueIgain[i]);
-        printf_s("%f\n", jParamGet->jointTorqueDgain[i]);
-        printf_s("%f\n", jParamGet->jointPositionPgain[i]);
-        printf_s("%f\n", jParamGet->jointPositionIgain[i]);
-        printf_s("%f\n", jParamGet->jointPositionDgain[i]);
-        printf_s("%f\n", jParamGet->jointGravityGain[i]);
-        printf_s("%f\n", jParamGet->jointFrictionGain[i]);
-        printf_s("%f\n", jParamGet->jointCurrentGain[i]);
-        printf_s("%f\n", jParamGet->jointConstantTorque[i]);
-        printf_s("%f\n", jParamGet->jointConstantSpring[i]);
-        printf_s("%f\n", jParamGet->jointConstantEfficiency[i]);
-    }
-    printf("----------------------------------------------\n");
-}
-
-void printf_jointTraj()
-{
-    printf("\nJoint Trajectory Get : \n");
-    for (int i = 0; i < 4; i++)
-    {
-        printf_s("%f\n", jTrajGet->JointTrajecotryTime[i]);
-        printf_s("%f\n", jTrajGet->JointTrajectoryAcc[i]);
-    }
-    printf("----------------------------------------------\n");
-}
