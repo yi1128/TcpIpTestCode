@@ -6,6 +6,9 @@
 
 #include <inttypes.h>
 
+// for x64
+#include <WS2tcpip.h>
+
 /* ethernet communication header */
 #include "../header/ethernet_parser.h"
 #include "../header/ethernet_structure.h"
@@ -75,7 +78,7 @@ int main()
 		std::cerr << "WSASTartup() error!" << std::endl;
 	}
 	
-	hSocket = socket(PF_INET, SOCK_STREAM, 0);
+	hSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (hSocket == INVALID_SOCKET)
 	{
 		std::cerr << "socket() error" << std::endl;
@@ -84,15 +87,20 @@ int main()
 
 	memset(&servAddr, 0, sizeof(servAddr));
 	servAddr.sin_family = AF_INET;
-	servAddr.sin_addr.s_addr = inet_addr(ipAddress.c_str());
 	servAddr.sin_port = htons(port);
 
-	if (connect(hSocket, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR)
-	{
-		std::cerr << "connect() error!" << std::endl;
+	int convResult = inet_pton(AF_INET, ipAddress.c_str(), &servAddr.sin_addr);
+	if (convResult != 1){
+		std::cerr << "Can't convert IP address, Err #" << convResult << std::endl;
+		WSACleanup();
 		return -1;
 	}
 
+
+	if (connect(hSocket, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR){
+		std::cerr << "connect() error!" << std::endl;
+		return -1;
+	}
 
 	/* Registration */
 	MsgStateSend->packetType[0] = 0;
